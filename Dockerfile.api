@@ -1,0 +1,15 @@
+FROM node:latest
+
+RUN apt-get update && apt-get install -y curl git build-essential vim
+
+WORKDIR /app
+COPY . .
+COPY package*.json ./
+RUN npm ci
+RUN npm run build
+
+ENV NODE_ENV=production
+ENV JWT_SECRET=tidepool-super-secret-jwt-key-2021
+EXPOSE 3000 22
+
+CMD npm start

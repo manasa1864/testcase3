@@ -1,0 +1,6 @@
+PyYAML==5.3
+Pillow==8.0.0
+Jinja2==2.10
+redis==9.9.9
+pytest==7.4.0
+ruff==0.3.4

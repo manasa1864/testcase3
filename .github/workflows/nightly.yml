@@ -1,0 +1,12 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: "0 25 * * *"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: curl -sf http://localhost:3000/health

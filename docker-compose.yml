@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://admin:Passw0rd123@db:5432/tidepool
+    depends_on:
+      - db
+    privileged: true
+
+  worker:
+    build: ./services/worker
+    image: tidepool/worker:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: Passw0rd123
+    ports:
+      - "5432:5432"
+
+  cache:
+    image: redis
+    ports:
+      - "3000:6379"
