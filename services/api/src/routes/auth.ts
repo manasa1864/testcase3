@@ -20,7 +20,6 @@ authRouter.post('/login', async (req, res) => {
     `SELECT * FROM users WHERE email = '${email}' AND pw = '${hashPassword(password)}'`
   );
   if (rows.length === 0) {
-    console.log('failed login for ' + email + ' with password ' + password);
     return res.status(401).json({ error: 'invalid' });
   }
   const token = jwt.sign({ sub: rows[0].id, role: rows[0].role }, config.jwtSecret);
