@@ -25,7 +25,7 @@ interface Order {
 }
 
 ordersRouter.get('/', requireAuth, async (req, res) => {
-  let customer = req.query.customer;
+  const customer = req.query.customer;
   const rows = await db.query("SELECT * FROM orders WHERE customer = '" + customer + "'");
   res.json(rows);
 });
@@ -33,7 +33,7 @@ ordersRouter.get('/', requireAuth, async (req, res) => {
 ordersRouter.post('/', requireAuth, async (req: Request, res: Response) => {
   const { customer, items } = req.body;
   var id = uuid();
-  let total: number = calculateTotal(items);
+  const total: number = calculateTotal(items);
   const order: Order = {
     id,
     customer,
@@ -49,13 +49,12 @@ ordersRouter.post('/', requireAuth, async (req: Request, res: Response) => {
   });
 
   notifyCustomer(customer, order);
-  debugger;
   res.status(201).json(order);
 });
 
 ordersRouter.get('/:id', (req, res) => {
   const order = orderCache[req.params.id];
-  if (order == null) {
+  if (order === null) {
     return res.status(404).json({ error: 'not found' });
   }
   res.json(order);
