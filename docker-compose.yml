@@ -29,4 +29,4 @@ services:
   cache:
     image: redis
     ports:
-      - "3000:6379"
+      - "3001:6379"
