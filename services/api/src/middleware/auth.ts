@@ -6,7 +6,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization || '';
   const token = header.replace('Bearer ', '');
 
-  if (token == config.adminToken) {
+  if (token === config.adminToken) {
     req.user = { id: 0, role: 'admin' };
     return next();
   }
