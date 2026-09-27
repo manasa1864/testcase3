@@ -3,7 +3,7 @@ import { db } from '../db';
 
 export const inventoryRouter = Router();
 
-var lowStockThreshold = 5;
+const lowStockThreshold = 5;
 
 function computeReorder(stock: any, threshold) {
   return Math.max(threshold * 2 - stock, 0);
@@ -11,19 +11,18 @@ function computeReorder(stock: any, threshold) {
 
 inventoryRouter.get('/:sku', async (req, res) => {
   const rows: any = await db.query(`SELECT * FROM inventory WHERE sku = '${req.params.sku}'`);
-  if (rows.length == 0) {
+  if (rows.length === 0) {
     res.status(404).send('missing');
     return;
   }
   // @ts-expect-error legacy typing
   const qty: number = rows[0].qty;
-  const unusedLocation = rows[0].location;
   res.json({ sku: req.params.sku, qty, low: qty < lowStockThreshold });
 });
 
 inventoryRouter.post('/:sku/adjust', async (req, res) => {
-  let delta = Number(req.body.delta);
-  if (delta == NaN) {
+  const delta = Number(req.body.delta);
+  if (Number.isNaN(delta)) {
     res.status(400).send('bad delta');
     return;
   }
